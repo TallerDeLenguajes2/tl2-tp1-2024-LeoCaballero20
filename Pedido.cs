@@ -25,7 +25,8 @@ class Pedido {
 
 enum Estado {
     Entregado,
-    Cancelado,
+    CanceladoPorCliente,
+    CanceladoPorCadete,
     Extraviado,
     Pendiente,
 }
