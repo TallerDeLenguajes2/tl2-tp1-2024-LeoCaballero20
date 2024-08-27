@@ -2,15 +2,20 @@
 class Cadeteria {
     private string nombre;
     private string telefono;
-    private List<Cadete> listadoCadetes;
-    public Cadeteria() {
-
+    private List<Cadete> listadoCadetes = new();
+    public Cadeteria(string nom, string tel) {
+        nombre = nom;
+        telefono = tel;
     }
 
     public string Nombre { get => nombre; set => nombre = value; }
     public string Telefono { get => telefono; set => telefono = value; }
 
-    public void atenderLlamada() {
+    public void contratarCadete(Cadete cadete) {
+        listadoCadetes.Add(cadete);
+    }
+
+    public void GestionarPedido() {
         bool confirmaPedido = false;
         Console.WriteLine("Buenas, desea realizar un pedido?");
         string respuesta;
@@ -22,10 +27,10 @@ class Cadeteria {
             confirmaPedido = true;
         }
         if (confirmaPedido) {
-            tomarPedido();
+            TomarPedido();
         }
     }
-    public void tomarPedido() {
+    public void TomarPedido() {
         Console.WriteLine("");
     }
 }
