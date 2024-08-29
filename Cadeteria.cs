@@ -3,34 +3,64 @@ class Cadeteria {
     private string nombre;
     private string telefono;
     private List<Cadete> listadoCadetes = new();
+    private List<Pedido> listadoPedidos = new();
     public Cadeteria(string nom, string tel) {
         nombre = nom;
         telefono = tel;
     }
 
-    public string Nombre { get => nombre; set => nombre = value; }
-    public string Telefono { get => telefono; set => telefono = value; }
+    public string Nombre { get => nombre; }
+    public string Telefono { get => telefono; 
+    
+    }
 
     public void contratarCadete(Cadete cadete) {
         listadoCadetes.Add(cadete);
     }
 
-    public void GestionarPedido() {
-        bool confirmaPedido = false;
-        Console.WriteLine("Buenas, desea realizar un pedido?");
-        string respuesta;
-        do {
-            Console.WriteLine("SI / NO");
-            respuesta = Console.ReadLine();
-        } while (respuesta!="SI" && respuesta!="NO");
-        if (respuesta == "SI") {
-            confirmaPedido = true;
-        }
-        if (confirmaPedido) {
-            TomarPedido();
+    public void GestionarPedidos() {
+        Console.WriteLine("Elija la opción deseada");
+        Console.WriteLine("1.Dar de alta pedidos");
+        Console.WriteLine("2.Asignar pedidos a cadetes");
+        Console.WriteLine("3.Cambiar estado de pedidos");
+        Console.WriteLine("4.Reasignar pedidos a otro cadete");
+        string opcion = Console.ReadLine();
+        Int32.TryParse(opcion, out int op);
+        switch (op) {
+            case 1: registrarPedido();
+            break;
+            case 2:
+            break;
+            case 3:
+            break;
+            case 4:
+            break;
         }
     }
-    public void TomarPedido() {
-        Console.WriteLine("");
+    public void registrarPedido() {
+        Console.WriteLine("Usted está por encargar un pedido en " + nombre);
+        Console.WriteLine("Por favor ingrese su nombre y apellido");
+        string nombreCliente = Console.ReadLine();
+        Console.WriteLine("Ahora su número de teléfono");
+        string telCliente = Console.ReadLine();
+        Console.WriteLine("A continuación indique si dirección");
+        string direcCliente = Console.ReadLine();
+        Console.WriteLine("Alguna referencia de su dirección para facilitar la entrega?");
+        string refCliente = Console.ReadLine();
+        string[] datosCliente = new string[4];
+        datosCliente[0] = nombreCliente;
+        datosCliente[1] = telCliente;
+        datosCliente[2] = direcCliente;
+        datosCliente[3] = refCliente;
+        Console.WriteLine("Ingrese el nombre del producto y observaciones");
+        string observaciones = Console.ReadLine();
+        int numPedido;
+        if (listadoPedidos.Count==0) {
+            numPedido = 1;
+        } else {
+            numPedido = listadoPedidos.Last().Numero + 1;
+        }
+        Pedido p = new(numPedido, observaciones, datosCliente);
+        listadoPedidos.Add(p);
     }
 }

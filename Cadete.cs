@@ -7,15 +7,15 @@ class Cadete {
     private List<Pedido> listadoDePedidos;
 
     public Cadete(string id, string nom, string dir, string tel) {
-        this.Id = id;
-        Nombre = nom;
-        Direccion = dir;
-        Telefono = tel;
+        this.id = id;
+        nombre = nom;
+        direccion = dir;
+        telefono = tel;
     }
 
-    public string Id { get => id; set => id = value; }
-    public string Nombre { get => nombre; set => nombre = value; }
-    public string Direccion { get => direccion; set => direccion = value; }
-    public string Telefono { get => telefono; set => telefono = value; }
-    internal List<Pedido> ListadoDePedidos { get => listadoDePedidos; set => listadoDePedidos = value; }
+    public string Id { get => id; }
+    public string Nombre { get => nombre; }
+    public string Direccion { get => direccion; }
+    public string Telefono { get => telefono; }
+    internal List<Pedido> ListadoDePedidos { get => listadoDePedidos; }
 }

@@ -1,19 +1,19 @@
 class Pedido {
-    private string numero;
+    private int numero;
     private string observacion;
     private Cliente cliente;
     private Estado estado;
-    public Pedido(string num, string obs, Cliente cli, Estado est) {
+    public Pedido(int num, string obs, string[] datosCliente) {
         numero = num;
         observacion = obs;
-        estado = est;
-        cliente = cli;
+        estado = Estado.Pendiente;
+        cliente = new(datosCliente[0], datosCliente[1], datosCliente[2], datosCliente[3]);
     }
 
-    public string Numero { get => numero; set => numero = value; }
-    public string Observacion { get => observacion; set => observacion = value; }
-    public Cliente Cliente { get => cliente; set => cliente = value; }
-    public Estado Estado { get => estado; set => estado = value; }
+    public int Numero { get => numero; }
+    public string Observacion { get => observacion; }
+    public Cliente Cliente { get => cliente; }
+    public Estado Estado { get => estado; }
 
     public string VerDireccionCliente() {
         return Cliente.Direccion;

@@ -1,19 +1,9 @@
-﻿string nombreArchivo = "csv/cadeteria.csv";
-StreamReader sr = new StreamReader(nombreArchivo);
-string linea;
-Cadeteria miCadeteria;
-string[] campos = ["Nombre Cadeteria","123456789"];
-while ((linea = sr.ReadLine()) != null) {
-    campos = linea.Split(',');
-}
-miCadeteria = new(campos[0],campos[1]);
+﻿Cadeteria miCadeteria = Persistencia.leerCadeteria();
 
-nombreArchivo = "csv/cadetes.csv";
-sr = new StreamReader(nombreArchivo);
-while ((linea = sr.ReadLine()) != null) {
-    campos = linea.Split(',');
-    Cadete c = new(campos[0], campos[1], campos[2], campos[3]);
+List<Cadete> listaCadetes = Persistencia.leerCadetes();
+
+foreach (Cadete c in listaCadetes) {
     miCadeteria.contratarCadete(c);
 }
 
-//miCadeteria.GestionarPedido();
+miCadeteria.GestionarPedidos();
