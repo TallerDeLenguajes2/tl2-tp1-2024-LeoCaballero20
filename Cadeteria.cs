@@ -27,9 +27,9 @@ class Cadeteria {
         string opcion = Console.ReadLine();
         Int32.TryParse(opcion, out int op);
         switch (op) {
-            case 1: registrarPedido();
+            case 1: RegistrarPedidos();
             break;
-            case 2:
+            case 2: AsignarPedidosACadetes();
             break;
             case 3:
             break;
@@ -37,7 +37,7 @@ class Cadeteria {
             break;
         }
     }
-    public void registrarPedido() {
+    public void RegistrarPedidos() {
         Console.WriteLine("Usted está por encargar un pedido en " + nombre);
         Console.WriteLine("Por favor ingrese su nombre y apellido");
         string nombreCliente = Console.ReadLine();
@@ -62,5 +62,27 @@ class Cadeteria {
         }
         Pedido p = new(numPedido, observaciones, datosCliente);
         listadoPedidos.Add(p);
+        Console.WriteLine("Su pedido está en marcha.");
+    }
+    public void AsignarPedidosACadetes() {
+        Console.WriteLine("Los pedidos registrados son:\n");
+        foreach (Pedido p in listadoPedidos) {
+            Console.WriteLine("\nNúmero de pedido: " + p.Numero);
+            Console.WriteLine("Detalle del pedido: " + p.Observacion);
+        }
+        while (listadoPedidos.Count > 0) {
+            foreach (Cadete c in listadoCadetes) {
+                foreach (Pedido p in listadoPedidos) {
+                    if (p.Estado==Estado.Registrado) {
+                        cambiarEstadoDePedido(p, Estado.PendienteDeEntrega);
+                        c.aceptarPedido(p);
+                        break;
+                    }
+                }
+            }
+        }  
+    }
+    public void cambiarEstadoDePedido(Pedido p, Estado e) {
+        p.Estado = e;
     }
 }

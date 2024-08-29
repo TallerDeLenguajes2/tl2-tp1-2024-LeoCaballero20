@@ -6,14 +6,14 @@ class Pedido {
     public Pedido(int num, string obs, string[] datosCliente) {
         numero = num;
         observacion = obs;
-        estado = Estado.Pendiente;
+        estado = Estado.Registrado;
         cliente = new(datosCliente[0], datosCliente[1], datosCliente[2], datosCliente[3]);
     }
 
     public int Numero { get => numero; }
     public string Observacion { get => observacion; }
     public Cliente Cliente { get => cliente; }
-    public Estado Estado { get => estado; }
+    public Estado Estado { get => estado; set => estado = value; }
 
     public string VerDireccionCliente() {
         return Cliente.Direccion;
@@ -27,6 +27,6 @@ enum Estado {
     Entregado,
     CanceladoPorCliente,
     CanceladoPorCadete,
-    Extraviado,
-    Pendiente,
+    Registrado,
+    PendienteDeEntrega,
 }

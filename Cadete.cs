@@ -4,7 +4,7 @@ class Cadete {
     private string nombre;
     private string direccion;
     private string telefono;
-    private List<Pedido> listadoDePedidos;
+    private List<Pedido> listadoDePedidos = new();
 
     public Cadete(string id, string nom, string dir, string tel) {
         this.id = id;
@@ -18,4 +18,8 @@ class Cadete {
     public string Direccion { get => direccion; }
     public string Telefono { get => telefono; }
     internal List<Pedido> ListadoDePedidos { get => listadoDePedidos; }
+
+    public void aceptarPedido(Pedido p) {
+        listadoDePedidos.Add(p);
+    }
 }
