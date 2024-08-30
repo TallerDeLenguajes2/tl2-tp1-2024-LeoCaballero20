@@ -3,6 +3,7 @@ class Pedido {
     private string observacion;
     private Cliente cliente;
     private Estado estado;
+    private Cadete cadete;
     public Pedido(int num, string obs, string[] datosCliente) {
         numero = num;
         observacion = obs;
@@ -14,6 +15,7 @@ class Pedido {
     public string Observacion { get => observacion; }
     public Cliente Cliente { get => cliente; }
     public Estado Estado { get => estado; set => estado = value; }
+    internal Cadete Cadete { get => cadete; }
 
     public string VerDireccionCliente() {
         return Cliente.Direccion;
@@ -21,12 +23,13 @@ class Pedido {
     public string VerDatosCliente() {
         return Cliente.DatosReferenciaDireccion;
     }
+    public void AsociarCadete(Cadete c) {
+        cadete = c;
+    }
 }
 
 enum Estado {
     Entregado,
-    CanceladoPorCliente,
-    CanceladoPorCadete,
     Registrado,
     PendienteDeEntrega,
 }
