@@ -1,4 +1,6 @@
 
+using System.Runtime.InteropServices.Marshalling;
+
 class Cadeteria {
     private string nombre;
     private string telefono;
@@ -19,23 +21,31 @@ class Cadeteria {
     }
 
     public void GestionarPedidos() {
-        Console.WriteLine("Elija la opción deseada");
-        Console.WriteLine("1.Dar de alta pedidos");
-        Console.WriteLine("2.Asignar pedidos a cadetes");
-        Console.WriteLine("3.Cambiar estado de pedidos");
-        Console.WriteLine("4.Reasignar pedidos a otro cadete");
-        string opcion = Console.ReadLine();
-        Int32.TryParse(opcion, out int op);
-        switch (op) {
-            case 1: RegistrarPedidos();
-            break;
-            case 2: AsignarPedidosACadetes();
-            break;
-            case 3:
-            break;
-            case 4:
-            break;
+        bool seguir = true;
+        while (seguir == true) {
+            Console.WriteLine("Elija la opción deseada");
+            Console.WriteLine("1.Dar de alta pedidos");
+            Console.WriteLine("2.Asignar pedidos a cadetes");
+            Console.WriteLine("3.Cambiar estado de pedidos");
+            Console.WriteLine("4.Reasignar pedidos a otro cadete");
+            Console.WriteLine("5.Salir");
+            string opcion = Console.ReadLine();
+            Int32.TryParse(opcion, out int op);
+            switch (op) {
+                case 1: RegistrarPedidos();
+                break;
+                case 2: AsignarPedidosACadetes();
+                break;
+                case 3: CambiarEstadoDePedido();
+                break;
+                case 4: ReasignarPedidos();
+                break;
+                case 5 : seguir = false;
+                         Console.WriteLine("Usted salió del sistema.");
+                break;
+            }
         }
+        
     }
     public void RegistrarPedidos() {
         Console.WriteLine("Usted está por encargar un pedido en " + nombre);
@@ -47,11 +57,7 @@ class Cadeteria {
         string direcCliente = Console.ReadLine();
         Console.WriteLine("Alguna referencia de su dirección para facilitar la entrega?");
         string refCliente = Console.ReadLine();
-        string[] datosCliente = new string[4];
-        datosCliente[0] = nombreCliente;
-        datosCliente[1] = telCliente;
-        datosCliente[2] = direcCliente;
-        datosCliente[3] = refCliente;
+        string[] datosCliente = [nombreCliente, telCliente, direcCliente, refCliente];
         Console.WriteLine("Ingrese el nombre del producto y observaciones");
         string observaciones = Console.ReadLine();
         int numPedido;
@@ -62,7 +68,7 @@ class Cadeteria {
         }
         Pedido p = new(numPedido, observaciones, datosCliente);
         listadoPedidos.Add(p);
-        Console.WriteLine("Su pedido está en marcha.");
+        Console.WriteLine("Su pedido está registrado.");
     }
     public void AsignarPedidosACadetes() {
         Console.WriteLine("Los pedidos registrados son:\n");
@@ -73,8 +79,7 @@ class Cadeteria {
         while (listadoPedidos.Count > 0) {
             foreach (Cadete c in listadoCadetes) {
                 foreach (Pedido p in listadoPedidos) {
-                    if (p.Estado==Estado.Registrado) {
-                        cambiarEstadoDePedido(p, Estado.PendienteDeEntrega);
+                    if (p.Estado==Estado.PendienteDeEntrega) {
                         c.aceptarPedido(p);
                         break;
                     }
@@ -82,7 +87,32 @@ class Cadeteria {
             }
         }  
     }
-    public void cambiarEstadoDePedido(Pedido p, Estado e) {
-        p.Estado = e;
+    public void CambiarEstadoDePedido() {
+        string num = "";
+        int numPedido;
+        while (!Int32.TryParse(num, out numPedido)) {
+            Console.WriteLine("Ingrese el número del pedido");
+            num = Console.ReadLine();
+        }
+        Pedido p = listadoPedidos.Find(x => x.Numero == numPedido);
+        if (p.Estado == Estado.PendienteDeEntrega) {
+            p.Estado = Estado.Entregado;
+        } else {
+            p.Estado = Estado.PendienteDeEntrega;
+        }
+    }
+
+    public void ReasignarPedidos() {
+        bool seguir = true;
+        while (seguir == true) {
+            string num = "";
+            int numPedido;
+            while (!Int32.TryParse(num, out numPedido)) {
+                Console.WriteLine("Ingrese el número del pedido a reasignar");
+                num = Console.ReadLine();
+            }
+            Pedido p = listadoPedidos.Find(x => x.Numero == numPedido);
+            Console.WriteLine("El cadete asignado para este pedido es: ");
+        }
     }
 }
