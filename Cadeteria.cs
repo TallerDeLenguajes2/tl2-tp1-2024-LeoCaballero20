@@ -97,34 +97,13 @@ class Cadeteria {
         p.AsociarCadete(c);
     }
 
-   /* public void AsignarPedidosACadetes() {
-        Console.WriteLine("Los pedidos registrados son:\n");
-        foreach (Pedido p in listadoPedidos) {
-            Console.WriteLine("\nNúmero de pedido: " + p.Numero);
-            Console.WriteLine("Detalle del pedido: " + p.Observacion);
-        }
-        while (listadoPedidos.Count > 0) {
-            foreach (Cadete c in listadoCadetes) {
-                foreach (Pedido p in listadoPedidos) {
-                    if (p.Estado==Estado.Registrado) {
-                        CambiarEstadoDePedido(p, Estado.PendienteDeEntrega);
-                        c.aceptarPedido(p);
-                        break;
-                    }
-                }
-            }
-        }  
-    } */
     public void CambiarEstadoDePedido(Pedido p, Estado e) {
         p.Estado = e;
     }
     public float JornalACobrar(string idCadete) {
         float montoTotal = 0;
-        foreach (Pedido p in listadoPedidos) {
-            if (p.Cadete.Id == idCadete) {
-                montoTotal+=500;
-            }
-        }
+        IEnumerable<Pedido> pedidosDelCadete = listadoPedidos.TakeWhile(x => x.Cadete.Id == idCadete && x.Estado==Estado.Entregado);
+        montoTotal = pedidosDelCadete.Count() * 500;
         return montoTotal;
     }
 }
