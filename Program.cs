@@ -1,6 +1,6 @@
-﻿Cadeteria miCadeteria = Persistencia.leerCadeteria();
+﻿Cadeteria miCadeteria = LectorArchivos.leerCadeteria();
 
-List<Cadete> listaCadetes = Persistencia.leerCadetes();
+List<Cadete> listaCadetes = LectorArchivos.leerCadetes();
 
 foreach (Cadete c in listaCadetes) {
     miCadeteria.contratarCadete(c);

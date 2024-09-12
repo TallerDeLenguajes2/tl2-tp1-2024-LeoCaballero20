@@ -1,4 +1,5 @@
 
+using System.Collections;
 using System.Runtime.InteropServices.Marshalling;
 
 class Cadeteria {
@@ -28,32 +29,37 @@ class Cadeteria {
             Console.WriteLine("2.Asignar pedidos a cadetes");
             Console.WriteLine("3.Cambiar estado de pedidos");
             Console.WriteLine("4.Reasignar pedidos a otro cadete");
-            Console.WriteLine("5.Salir");
+            Console.WriteLine("5.Finalizar jornada");
             string opcion = Console.ReadLine();
             Int32.TryParse(opcion, out int op);
             switch (op) {
-                case 1: RegistrarPedidos();
+                case 1: Console.Clear();
+                        RegistrarPedidos();
                 break;
-                case 2: AsignarPedidosACadetes();
+                case 2: Console.Clear();
+                        AsignarPedidosACadetes();
                 break;
-                case 3: CambiarEstadoDePedido();
+                case 3: Console.Clear();
+                        CambiarEstadoDePedido();
                 break;
-                case 4: ReasignarPedidos();
+                case 4: Console.Clear();
+                        ReasignarPedido();
                 break;
-                case 5 : seguir = false;
-                         Console.WriteLine("Usted salió del sistema.");
+                case 5: Console.Clear();
+                        seguir = false;
+                        MostrarInforme();
                 break;
             }
         }
         
     }
     public void RegistrarPedidos() {
-        Console.WriteLine("Usted está por encargar un pedido en " + nombre);
+        Console.WriteLine("Usted está por registrar un pedido en " + nombre);
         Console.WriteLine("Por favor ingrese su nombre y apellido");
         string nombreCliente = Console.ReadLine();
         Console.WriteLine("Ahora su número de teléfono");
         string telCliente = Console.ReadLine();
-        Console.WriteLine("A continuación indique si dirección");
+        Console.WriteLine("A continuación indique su dirección");
         string direcCliente = Console.ReadLine();
         Console.WriteLine("Alguna referencia de su dirección para facilitar la entrega?");
         string refCliente = Console.ReadLine();
@@ -71,21 +77,35 @@ class Cadeteria {
         Console.WriteLine("Su pedido está registrado.");
     }
     public void AsignarPedidosACadetes() {
-        Console.WriteLine("Los pedidos registrados son:\n");
-        foreach (Pedido p in listadoPedidos) {
-            Console.WriteLine("\nNúmero de pedido: " + p.Numero);
-            Console.WriteLine("Detalle del pedido: " + p.Observacion);
+        Console.WriteLine("\nLos pedidos son:");
+        foreach (Pedido ped in listadoPedidos) {
+            Console.WriteLine("\nNúmero de pedido: " + ped.Numero);
+            Console.WriteLine("Detalle del pedido: " + ped.Observacion);
         }
-        while (listadoPedidos.Count > 0) {
-            foreach (Cadete c in listadoCadetes) {
-                foreach (Pedido p in listadoPedidos) {
-                    if (p.Estado==Estado.PendienteDeEntrega) {
-                        c.aceptarPedido(p);
-                        break;
-                    }
-                }
-            }
-        }  
+        string num = "";
+        int numPedido;
+        while (!Int32.TryParse(num, out numPedido)) {
+            Console.WriteLine("Ingrese el número del pedido a asignar");
+            num = Console.ReadLine();
+        }
+        Pedido p = listadoPedidos.Find(x => x.Numero == numPedido);
+        Console.WriteLine("Listado de cadetes para asignar: ");
+        foreach (Cadete c in listadoCadetes) {
+            Console.WriteLine("ID del cadete: " + c.Id);
+            Console.WriteLine("Nombre del cadete: " + c.Nombre);
+        }
+        num = "";
+        while (!Int32.TryParse(num, out numPedido)) {
+            Console.WriteLine("Ingrese el ID del cadete");
+            num = Console.ReadLine();
+        }
+        Cadete cadete = listadoCadetes.Find(x => x.Id == num);
+        if (cadete != null) {
+            cadete.aceptarPedido(p);
+            Console.WriteLine("Pedido asignado con éxito!");
+        } else {
+            Console.WriteLine("Cadete inexistente");
+        }
     }
     public void CambiarEstadoDePedido() {
         string num = "";
@@ -102,9 +122,7 @@ class Cadeteria {
         }
     }
 
-    public void ReasignarPedidos() {
-        bool seguir = true;
-        while (seguir == true) {
+    public void ReasignarPedido() {
             string num = "";
             int numPedido;
             while (!Int32.TryParse(num, out numPedido)) {
@@ -112,7 +130,45 @@ class Cadeteria {
                 num = Console.ReadLine();
             }
             Pedido p = listadoPedidos.Find(x => x.Numero == numPedido);
+            Cadete anteriorCadete = listadoCadetes.Find(x => x.ListadoDePedidos.Contains(p));
             Console.WriteLine("El cadete asignado para este pedido es: ");
+            Console.WriteLine("ID del cadete: " + anteriorCadete.Id);
+            Console.WriteLine("Nombre del cadete: " + anteriorCadete.Nombre);
+            List<Cadete> listaCadetesPosibles = listadoCadetes.Where(x => x.ListadoDePedidos.Find(x => x.Numero == numPedido) == null).ToList();
+            Console.WriteLine("Listado de cadetes para reasignar: ");
+            foreach (Cadete c in listaCadetesPosibles) {
+                Console.WriteLine("ID del cadete: " + c.Id);
+                Console.WriteLine("Nombre del cadete: " + c.Nombre);
+            }
+            num = "";
+            while (!Int32.TryParse(num, out numPedido)) {
+                Console.WriteLine("Ingrese el ID del nuevo cadete");
+                num = Console.ReadLine();
+            }
+            Cadete nuevoCadete = listaCadetesPosibles.Find(x => x.Id == num);
+            if (nuevoCadete != null) {
+                anteriorCadete.eliminarPedido(p);
+                nuevoCadete.aceptarPedido(p);
+                Console.WriteLine("Pedido reasignado con éxito!");
+            } else {
+                Console.WriteLine("Cadete inexistente");
+            }
+    }
+
+    public void MostrarInforme() {
+        int totalEnvios = 0;
+        Console.WriteLine("INFORME DE LA JORNADA");
+        foreach (Cadete c in listadoCadetes) {
+            Console.WriteLine("\nID del cadete: " + c.Id);
+            Console.WriteLine("Nombre del cadete: " + c.Nombre);
+            List<Pedido> entregados = c.ListadoDePedidos.Where(x => x.Estado == Estado.Entregado).ToList();
+            int cantidadEntregas = entregados.Count();
+            Console.WriteLine("Cantidad de pedidos entregados:" + cantidadEntregas);
+            totalEnvios += cantidadEntregas;
         }
+        Console.WriteLine("\nCantidad total de pedidos entregados: " + totalEnvios);
+        Console.WriteLine("Monto ganado: " + totalEnvios*500);
+        Console.WriteLine("Cantidad de envíos promedio por cadete: " + totalEnvios/listadoCadetes.Count());
+        Console.WriteLine("¡Hasta la próxima!");
     }
 }

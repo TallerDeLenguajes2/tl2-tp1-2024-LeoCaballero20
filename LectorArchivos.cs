@@ -1,4 +1,4 @@
-static class Persistencia {
+static class LectorArchivos {
 
     public static List<Cadete> leerCadetes() {
         string nombreArchivo = "csv/cadetes.csv";
@@ -18,7 +18,7 @@ static class Persistencia {
         StreamReader sr = new StreamReader(nombreArchivo);
         string linea;
         Cadeteria miCadeteria;
-        string[] campos = ["Nombre Cadeteria","123456789"];
+        string[] campos = new string[2];
         while ((linea = sr.ReadLine()) != null) {
             campos = linea.Split(',');
         }

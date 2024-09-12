@@ -22,4 +22,8 @@ class Cadete {
     public void aceptarPedido(Pedido p) {
         listadoDePedidos.Add(p);
     }
+
+    public void eliminarPedido(Pedido p) {
+        listadoDePedidos.Remove(p);
+    }
 }
