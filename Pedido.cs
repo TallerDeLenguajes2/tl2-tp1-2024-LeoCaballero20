@@ -7,7 +7,7 @@ class Pedido {
     public Pedido(int num, string obs, string[] datosCliente) {
         numero = num;
         observacion = obs;
-        estado = Estado.Registrado;
+        estado = Estado.PendienteDeEntrega;
         cliente = new(datosCliente[0], datosCliente[1], datosCliente[2], datosCliente[3]);
     }
 
@@ -30,6 +30,5 @@ class Pedido {
 
 enum Estado {
     Entregado,
-    Registrado,
     PendienteDeEntrega,
 }
