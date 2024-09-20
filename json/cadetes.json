@@ -1,0 +1,26 @@
+[
+    {
+        "Id": "1",
+        "Nombre": "Leonardo Caballero",
+        "Direccion": "Corrientes 942",
+        "Telefono": "3865412718"
+    },
+    {
+        "Id": "2",
+        "Nombre": "Ulises Gonzalez",
+        "Direccion": "San Martin 2673",
+        "Telefono": "3865794851"
+    },
+    {
+        "Id": "3",
+        "Nombre": "Gabriel Rojas",
+        "Direccion": "Jujuy 4000",
+        "telefono": "3815642389"
+    },
+    {
+        "Id": "4",
+        "Nombre": "Son Goku",
+        "Direccion": "Namekusein 500",
+        "telefono": "3865421789"
+    }
+]

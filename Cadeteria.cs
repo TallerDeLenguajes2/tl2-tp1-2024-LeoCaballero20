@@ -1,20 +1,17 @@
-
-using System.Timers;
-
-class Cadeteria {
+public class Cadeteria {
     private string nombre;
     private string telefono;
     private List<Cadete> listadoCadetes = new();
     private List<Pedido> listadoPedidos = new();
+
+    public Cadeteria() {}
     public Cadeteria(string nom, string tel) {
         nombre = nom;
         telefono = tel;
     }
 
-    public string Nombre { get => nombre; }
-    public string Telefono { get => telefono; 
-    
-    }
+    public string Nombre { get => nombre; set => nombre = value;}
+    public string Telefono { get => telefono; set => telefono = value;}
 
     public void contratarCadete(Cadete cadete) {
         listadoCadetes.Add(cadete);
@@ -32,16 +29,22 @@ class Cadeteria {
             string opcion = Console.ReadLine();
             Int32.TryParse(opcion, out int op);
             switch (op) {
-                case 1: RegistrarPedidos();
+                case 1: Console.Clear();
+                        RegistrarPedidos();
                 break;
-                case 2: AsignarCadeteAPedido();
+                case 2: Console.Clear();
+                        AsignarCadeteAPedido();
                 break;
-                case 3: CambiarEstadoDePedido();
+                case 3: Console.Clear();
+                        CambiarEstadoDePedido();
                 break;
-                case 4: ReasignarCadete();
+                case 4: Console.Clear();
+                        ReasignarCadete();
                 break;
-                case 5: seguir = false;
-                        Console.WriteLine("Usted salió del sistema");
+                case 5: 
+                        Console.Clear();
+                        seguir = false;
+                        MostrarInforme();
                 break;
             }
         }
@@ -113,5 +116,21 @@ class Cadeteria {
         IEnumerable<Pedido> pedidosDelCadete = listadoPedidos.TakeWhile(x => x.Cadete.Id == idCadete && x.Estado==Estado.Entregado);
         montoTotal = pedidosDelCadete.Count() * 500;
         return montoTotal;
+    }
+
+    public void MostrarInforme() {
+        int totalEnvios = 0;
+        Console.WriteLine("INFORME DE LA JORNADA");
+        foreach (Cadete c in listadoCadetes) {
+            Console.WriteLine("\nID del cadete: " + c.Id);
+            Console.WriteLine("Nombre del cadete: " + c.Nombre);
+            int cantidadEntregas= listadoPedidos.Where(x => x.Estado == Estado.Entregado && x.Cadete.Id == c.Id).Count();
+            Console.WriteLine("Cantidad de pedidos entregados:" + cantidadEntregas);
+            totalEnvios += cantidadEntregas;
+        }
+        Console.WriteLine("\nCantidad total de pedidos entregados: " + totalEnvios);
+        Console.WriteLine("Monto ganado: " + totalEnvios*500);
+        Console.WriteLine("Cantidad de envíos promedio por cadete: " + totalEnvios/listadoCadetes.Count());
+        Console.WriteLine("¡Hasta la próxima!");
     }
 }
